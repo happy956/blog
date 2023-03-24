@@ -4,13 +4,10 @@ image: title.jfif
 about:
   template: jolla
   links:
-    - icon: linkedin
-      text: LinkedIn
-      href: https://linkedin.com
     - icon: github
       text: Github
       href: https://github.com/happy956
-
+title-block-banner: false
 ---
 
 ### About this blog

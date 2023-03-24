@@ -2,13 +2,15 @@
 title: "New posting test"
 author: "Taebum Eom"
 date: "2023-03-14"
-categories: [news, code, analysis]
+date-format: "YYYY/MM/DD"
+categories: [example]
 image: "image.jpg"
+title-block-banner: false
+page-layout: full
 ---
 
 이곳에 글을 쓰면 포스팅이 되는 겁니다.  
 티스토리나 네이버 블로그 포스팅 하듯이 이곳에 쓸 수가 있어요.
-
 
 ```{python}
 import matplotlib.pyplot as plt
