@@ -2,6 +2,7 @@
 title: "Numpy"
 author: "Taebum Eom"
 date: "2023-03-24"
+date-format: "YYYY/MM/DD"
 categories: [data-mining]
 title-block-banner: false
 page-layout: full
