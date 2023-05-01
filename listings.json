@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/1. Your First Map/exercise-your-first-map.html",
       "/posts/numpy/numpy.html",
       "/posts/new-posting/index.html"
     ]
