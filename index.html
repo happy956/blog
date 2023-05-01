@@ -132,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Data-Mining">Data-Mining <span class="quarto-category-count">(1)</span></div><div class="category" data-category="GeoPandas">GeoPandas <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data-mining">data-mining <span class="quarto-category-count">(1)</span></div><div class="category" data-category="example">example <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Basic">Basic <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Data-Mining">Data-Mining <span class="quarto-category-count">(2)</span></div><div class="category" data-category="GeoPandas">GeoPandas <span class="quarto-category-count">(1)</span></div><div class="category" data-category="example">example <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -156,8 +156,33 @@ ul.task-list li input[type="checkbox"] {
 
 <p>:::{#quarto-listing-pipeline .hidden} <span class="hidden" data-render-id="quarto-enable-math-inline"><span class="math inline">\(e = mC^2\)</span></span></p>
 <p>:::{.hidden render-id=“pipeline-listing-listing”}</p>
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-author" data-direction="asc">
+          Author
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
 :::{.list .quarto-listing-default}
-<div class="quarto-post image-right" data-index="0" data-categories="Data-Mining,GeoPandas" data-listing-date-sort="1682866800000" data-listing-file-modified-sort="1682910258249" data-listing-reading-time-sort="1.615">
+<div class="quarto-post image-right" data-index="0" data-categories="Data-Mining,GeoPandas" data-listing-date-sort="1682866800000" data-listing-file-modified-sort="1682910890599" data-listing-reading-time-sort="1.615">
 <div class="thumbnail">
 <p><a href="./posts/1_Your_First_Map/exercise-your-first-map.html"> <img src="https://storage.googleapis.com/kaggle-media/learn/images/2G8C53X.png" class="thumnail-image"> </a></p>
 </div>
@@ -196,7 +221,7 @@ Taebum Eom
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="data-mining" data-listing-date-sort="1679583600000" data-listing-file-modified-sort="1679662071363" data-listing-reading-time-sort="15.39">
+<div class="quarto-post image-right" data-index="1" data-categories="Data-Mining,Basic" data-listing-date-sort="1679583600000" data-listing-file-modified-sort="1682910879242" data-listing-reading-time-sort="15.39">
 <div class="thumbnail">
 <a href="./posts/numpy/numpy.html">
 <div class="thumbnail-image">
@@ -214,8 +239,11 @@ Numpy
 </div>
 </a>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('data-mining'); return false;">
-data-mining
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Basic'); return false;">
+Basic
 </div>
 </div>
 <a href="./posts/numpy/numpy.html">
