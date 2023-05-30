@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/UBER/uber.html",
       "/posts/geopandas/exercise1-your-first-map.html",
       "/posts/geopandas/exercise2-coordinate-reference-systems.html",
       "/posts/geopandas/exercise3-interactive-maps.html",
