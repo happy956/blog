@@ -3,7 +3,7 @@ title: "New posting test"
 author: "Taebum Eom"
 date: "2023-03-14"
 date-format: "YYYY/MM/DD"
-categories: [example]
+categories: [Example]
 image: "image.jpg"
 title-block-banner: false
 page-layout: full

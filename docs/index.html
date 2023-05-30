@@ -70,7 +70,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
       
       searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
@@ -132,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-mining">data-mining <span class="quarto-category-count">(1)</span></div><div class="category" data-category="example">example <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(10)</span></div><div class="category" data-category="Basic">Basic <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Data-Mining">Data-Mining <span class="quarto-category-count">(9)</span></div><div class="category" data-category="Example">Example <span class="quarto-category-count">(1)</span></div><div class="category" data-category="GeoPandas">GeoPandas <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Kaggle">Kaggle <span class="quarto-category-count">(5)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -158,11 +158,360 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="data-mining" data-listing-date-sort="1679583600000" data-listing-file-modified-sort="1679661780714" data-listing-reading-time-sort="15.39">
+<div class="quarto-post image-right" data-index="0" data-categories="Data-Mining,GeoPandas" data-listing-date-sort="1685372400000" data-listing-file-modified-sort="1685449707751" data-listing-reading-time-sort="0.58">
+<div class="thumbnail">
+<p><a href="./posts/UBER/uber.html"> <img src="./posts/UBER/h3.png" class="thumnail-image" style="height: 150px;"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/UBER/uber.html">
+<h3 class="no-anchor listing-title">
+data_analysis_uber
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('GeoPandas'); return false;">
+GeoPandas
+</div>
+</div>
+<a href="./posts/UBER/uber.html">
+<div class="listing-description">
+data_analysis_uber
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/UBER/uber.html">
+<div class="listing-date">
+2023/05/30
+</div>
+<div class="listing-author">
+Taebum Eom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Data-Mining,GeoPandas,Kaggle" data-listing-date-sort="1682866800000" data-listing-file-modified-sort="1682914621421" data-listing-reading-time-sort="1.595">
+<div class="thumbnail">
+<p><a href="./posts/geopandas/exercise1-your-first-map.html"> <img src="https://storage.googleapis.com/kaggle-media/learn/images/2G8C53X.png" class="thumnail-image" style="height: 150px;"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/geopandas/exercise1-your-first-map.html">
+<h3 class="no-anchor listing-title">
+Your First Map
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('GeoPandas'); return false;">
+GeoPandas
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Kaggle'); return false;">
+Kaggle
+</div>
+</div>
+<a href="./posts/geopandas/exercise1-your-first-map.html">
+<div class="listing-description">
+Kaggle - Exercise 1.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/geopandas/exercise1-your-first-map.html">
+<div class="listing-date">
+2023/05/01
+</div>
+<div class="listing-author">
+Taebum Eom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="Data-Mining,GeoPandas,Kaggle" data-listing-date-sort="1682866800000" data-listing-file-modified-sort="1682914000231" data-listing-reading-time-sort="4.64">
+<div class="thumbnail">
+<p><a href="./posts/geopandas/exercise2-coordinate-reference-systems.html"> <img src="https://storage.googleapis.com/kaggle-media/learn/images/qQcS0KM.png" class="thumnail-image" style="height: 150px;"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/geopandas/exercise2-coordinate-reference-systems.html">
+<h3 class="no-anchor listing-title">
+coordinate-reference-systems
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('GeoPandas'); return false;">
+GeoPandas
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Kaggle'); return false;">
+Kaggle
+</div>
+</div>
+<a href="./posts/geopandas/exercise2-coordinate-reference-systems.html">
+<div class="listing-description">
+Kaggle - Exercise 2.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/geopandas/exercise2-coordinate-reference-systems.html">
+<div class="listing-date">
+2023/05/01
+</div>
+<div class="listing-author">
+Taebum Eom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="Data-Mining,GeoPandas,Kaggle" data-listing-date-sort="1682866800000" data-listing-file-modified-sort="1682914706513" data-listing-reading-time-sort="2.525">
+<div class="thumbnail">
+<p><a href="./posts/geopandas/exercise3-interactive-maps.html"> <img src="https://storage.googleapis.com/kaggle-media/learn/images/Kuh9gPj.png" class="thumnail-image" style="height: 150px;"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/geopandas/exercise3-interactive-maps.html">
+<h3 class="no-anchor listing-title">
+interactive-maps
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('GeoPandas'); return false;">
+GeoPandas
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Kaggle'); return false;">
+Kaggle
+</div>
+</div>
+<a href="./posts/geopandas/exercise3-interactive-maps.html">
+<div class="listing-description">
+Kaggle - Exercise 3.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/geopandas/exercise3-interactive-maps.html">
+<div class="listing-date">
+2023/05/01
+</div>
+<div class="listing-author">
+Taebum Eom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="Data-Mining,GeoPandas,Kaggle" data-listing-date-sort="1682866800000" data-listing-file-modified-sort="1682913997789" data-listing-reading-time-sort="3.605">
+<div class="thumbnail">
+<p><a href="./posts/geopandas/exercise4-manipulating-geospatial-data.html"> <img src="https://storage.googleapis.com/kaggle-media/learn/images/BIyE6kR.png" class="thumnail-image" style="height: 150px;"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/geopandas/exercise4-manipulating-geospatial-data.html">
+<h3 class="no-anchor listing-title">
+manipulating-geospatial-data
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('GeoPandas'); return false;">
+GeoPandas
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Kaggle'); return false;">
+Kaggle
+</div>
+</div>
+<a href="./posts/geopandas/exercise4-manipulating-geospatial-data.html">
+<div class="listing-description">
+Kaggle - Exercise 4.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/geopandas/exercise4-manipulating-geospatial-data.html">
+<div class="listing-date">
+2023/05/01
+</div>
+<div class="listing-author">
+Taebum Eom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="Data-Mining,GeoPandas,Kaggle" data-listing-date-sort="1682866800000" data-listing-file-modified-sort="1682914030486" data-listing-reading-time-sort="2.64">
+<div class="thumbnail">
+<p><a href="./posts/geopandas/exercise5-proximity-analysis.html"> <img src="https://storage.googleapis.com/kaggle-media/learn/images/wamd0n7.png" class="thumnail-image" style="height: 150px;"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/geopandas/exercise5-proximity-analysis.html">
+<h3 class="no-anchor listing-title">
+proximity-analysis
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('GeoPandas'); return false;">
+GeoPandas
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Kaggle'); return false;">
+Kaggle
+</div>
+</div>
+<a href="./posts/geopandas/exercise5-proximity-analysis.html">
+<div class="listing-description">
+Kaggle - Exercise 5.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/geopandas/exercise5-proximity-analysis.html">
+<div class="listing-date">
+2023/05/01
+</div>
+<div class="listing-author">
+Taebum Eom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="Data-Mining,Basic" data-listing-date-sort="1682607600000" data-listing-file-modified-sort="1682915833351" data-listing-reading-time-sort="22.375">
+<div class="thumbnail">
+<a href="./posts/matplotlib_seaborn/matplotlib_seaborn.html">
+<div class="thumbnail-image" style="height: 150px;">
+
+</div>
+</a><p><a href="./posts/matplotlib_seaborn/matplotlib_seaborn.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/matplotlib_seaborn/matplotlib_seaborn.html">
+<h3 class="no-anchor listing-title">
+Matplotlib &amp; Seaborn
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Basic'); return false;">
+Basic
+</div>
+</div>
+<a href="./posts/matplotlib_seaborn/matplotlib_seaborn.html">
+<div class="listing-description">
+“matplotlib &amp; seaborn 기본 코드 실습(한글)”
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/matplotlib_seaborn/matplotlib_seaborn.html">
+<div class="listing-date">
+2023/04/28
+</div>
+<div class="listing-author">
+Taebum Eom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="Data-Mining,Basic" data-listing-date-sort="1682607600000" data-listing-file-modified-sort="1682915299135" data-listing-reading-time-sort="19.525">
+<div class="thumbnail">
+<a href="./posts/pandas/pandas.html">
+<div class="thumbnail-image" style="height: 150px;">
+
+</div>
+</a><p><a href="./posts/pandas/pandas.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/pandas/pandas.html">
+<h3 class="no-anchor listing-title">
+Pandas
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Basic'); return false;">
+Basic
+</div>
+</div>
+<a href="./posts/pandas/pandas.html">
+<div class="listing-description">
+“pandas 기본 코드 실습(한글)”
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/pandas/pandas.html">
+<div class="listing-date">
+2023/04/28
+</div>
+<div class="listing-author">
+Taebum Eom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-categories="Data-Mining,Basic" data-listing-date-sort="1679583600000" data-listing-file-modified-sort="1682910879242" data-listing-reading-time-sort="15.39">
 <div class="thumbnail">
 <a href="./posts/numpy/numpy.html">
-<div class="thumbnail-image">
+<div class="thumbnail-image" style="height: 150px;">
 
 </div>
 </a><p><a href="./posts/numpy/numpy.html"></a></p>
@@ -177,8 +526,11 @@ Numpy
 </div>
 </a>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('data-mining'); return false;">
-data-mining
+<div class="listing-category" onclick="window.quartoListingCategory('Data-Mining'); return false;">
+Data-Mining
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Basic'); return false;">
+Basic
 </div>
 </div>
 <a href="./posts/numpy/numpy.html">
@@ -198,9 +550,9 @@ Taebum Eom
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="example" data-listing-date-sort="1678719600000" data-listing-file-modified-sort="1679661807206" data-listing-reading-time-sort="0.205">
+<div class="quarto-post image-right" data-index="9" data-categories="Example" data-listing-date-sort="1678719600000" data-listing-file-modified-sort="1682912801293" data-listing-reading-time-sort="0.205">
 <div class="thumbnail">
-<p><a href="./posts/new-posting/index.html"> <img src="./posts/new-posting/image.jpg" class="thumnail-image"> </a></p>
+<p><a href="./posts/new-posting/index.html"> <img src="./posts/new-posting/image.jpg" class="thumnail-image" style="height: 150px;"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/new-posting/index.html">
@@ -212,8 +564,8 @@ New posting test
 </div>
 </a>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('example'); return false;">
-example
+<div class="listing-category" onclick="window.quartoListingCategory('Example'); return false;">
+Example
 </div>
 </div>
 <a href="./posts/new-posting/index.html">

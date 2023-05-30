@@ -2,6 +2,14 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/UBER/uber.html",
+      "/posts/geopandas/exercise1-your-first-map.html",
+      "/posts/geopandas/exercise2-coordinate-reference-systems.html",
+      "/posts/geopandas/exercise3-interactive-maps.html",
+      "/posts/geopandas/exercise4-manipulating-geospatial-data.html",
+      "/posts/geopandas/exercise5-proximity-analysis.html",
+      "/posts/matplotlib_seaborn/matplotlib_seaborn.html",
+      "/posts/pandas/pandas.html",
       "/posts/numpy/numpy.html",
       "/posts/new-posting/index.html"
     ]

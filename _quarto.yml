@@ -12,7 +12,5 @@ website:
 format:
   html:
     theme: lux
+    toc: true
     css: styles.css
-
-
-

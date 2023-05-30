@@ -19,5 +19,47 @@
   },
   "posts/numpy/numpy.qmd": {
     "numpy.html": "651c4e3c"
+  },
+  "posts/1. Your First Map/exercise-your-first-map.ipynb": {
+    "exercise-your-first-map.html": "ec772580"
+  },
+  "posts/1_Your_First_Map/exercise-your-first-map.ipynb": {
+    "exercise-your-first-map.html": "c60fd456"
+  },
+  "posts/geopandas/1_your_first_map.qmd": {
+    "1_your_first_map.html": "47c99aea"
+  },
+  "posts/geopandas/exercise-your-first-map copy.qmd": {
+    "exercise-your-first-map copy.html": "9b0b0f45"
+  },
+  "posts/geopandas/exercise-your-first-map.qmd": {
+    "exercise-your-first-map.html": "a745dd32"
+  },
+  "posts/geopandas/exercise-your-first-map.ipynb": {
+    "exercise-your-first-map.html": "68bac16c"
+  },
+  "posts/geopandas/exercise1-your-first-map.ipynb": {
+    "exercise1-your-first-map.html": "d8955908"
+  },
+  "posts/geopandas/exercise2-coordinate-reference-systems.ipynb": {
+    "exercise2-coordinate-reference-systems.html": "7b6ab39a"
+  },
+  "posts/geopandas/exercise3-interactive-maps.ipynb": {
+    "exercise3-interactive-maps.html": "4c1990c0"
+  },
+  "posts/geopandas/exercise4-manipulating-geospatial-data.ipynb": {
+    "exercise4-manipulating-geospatial-data.html": "d73b3a68"
+  },
+  "posts/geopandas/exercise5-proximity-analysis.ipynb": {
+    "exercise5-proximity-analysis.html": "50f102b6"
+  },
+  "posts/matplotlib_seaborn/matplotlib_seaborn.qmd": {
+    "matplotlib_seaborn.html": "e7f062ad"
+  },
+  "posts/pandas/pandas.qmd": {
+    "pandas.html": "18ea1aab"
+  },
+  "posts/UBER/uber.ipynb": {
+    "uber.html": "0edbeed4"
   }
 }

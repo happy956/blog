@@ -1,0 +1,1390 @@
+---
+title: "Matplotlib & Seaborn"
+author: "Taebum Eom"
+date: "2023-04-28"
+date-format: "YYYY/MM/DD"
+categories: [Data-Mining, Basic]
+title-block-banner: false
+page-layout: full
+---
+
+# "Matplotlib & Seaborn 기본"
+> "matplotlib & seaborn 기본 코드 실습(한글)"
+
+## 강의자료 출처
+
+* 원문: by Aurélien Geron ([Link](https://colab.research.google.com/github/ageron/handson-ml2/blob/master/tools_matplotlib.ipynb))
+
+* Translated by Chansung PARK ([Link](https://colab.research.google.com/drive/1lo8pAAo5GiUk4BZvSEnnkET6hTjP6eLR#scrollTo=-yy849LCUtaO))  
+* Object Oriented API Addition by Jehyun LEE ([Link](https://colab.research.google.com/drive/1dxrnul-rIvJ6z9pO6DKmmeuQnfSVN81u?usp=drive_open))
+
+**Tools - matplotlib**
+
+이 노트북은 matplotlib 라이브러리를 사용하여 아름다운 그래프를 그리는 방법을 보여줍니다.
+
+> 이제현 주 : 
+* 원 코드가 `pyplot` 기반으로 작성되었기에 `object oriented API`를 추가하였습니다.
+* `pyplot`은 `pandas` 같은 라이브러리와 함께 사용하며 그래프를 빠르게 그려보기 좋습니다. 그러나 코드의 가독성과 섬세한 제어는 `object oriented API`(객체지향 인터페이스)방식이 더 유리하게 느껴집니다.
+* `pyplot`과 `object oriented API`의 차이에 대해 상세히 알고 싶으시면 [이 글](https://matplotlib.org/api/api_overview.html)을 참고하십시오
+
+# 목차
+ <p><div class="lev1"><a href="#Plotting-your-first-graph-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>처음으로 그려보는 그래프</a></div><div class="lev1"><a href="#Line-style-and-color-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>선의 스타일과 색상</a></div><div class="lev1"><a href="#Saving-a-figure-3"><span class="toc-item-num">3&nbsp;&nbsp;</span>그림의 저장</a></div><div class="lev1"><a href="#Subplots-4"><span class="toc-item-num">4&nbsp;&nbsp;</span>부분 그래프</a></div><div class="lev1"><a href="#Multiple-figures-5"><span class="toc-item-num">5&nbsp;&nbsp;</span>여러개의 그림</a></div><div class="lev1"><a href="#Pyplot's-state-machine:-implicit-vs-explicit-6"><span class="toc-item-num">6&nbsp;&nbsp;</span>Pyplot의 상태 머신: 암시적 <em>vs</em> 명시적 </a></div><div class="lev1"><a href="#Pylab-vs-Pyplot-vs-Matplotlib-7"><span class="toc-item-num">7&nbsp;&nbsp;</span>Pylab <em>vs</em> Pyplot <em>vs</em> Matplotlib</a></div><div class="lev1"><a href="#Drawing-text-8"><span class="toc-item-num">8&nbsp;&nbsp;</span>텍스트 그리기</a></div><div class="lev1"><a href="#Legends-9"><span class="toc-item-num">9&nbsp;&nbsp;</span>범례 (Legends)</a></div><div class="lev1"><a href="#Non-linear-scales-10"><span class="toc-item-num">10&nbsp;&nbsp;</span>비선형 척도 (Non linear scales)</a></div><div class="lev1"><a href="#Ticks-and-tickers-11"><span class="toc-item-num">11&nbsp;&nbsp;</span>틱과 티커 (Ticks and tickers)</a></div><div class="lev1"><a href="#Polar-projection-12"><span class="toc-item-num">12&nbsp;&nbsp;</span>극좌표계 투영 (Polar projection)</a></div><div class="lev1"><a href="#3D-projection-13"><span class="toc-item-num">13&nbsp;&nbsp;</span>3차원 투영</a></div><div class="lev1"><a href="#Scatter-plot-14"><span class="toc-item-num">14&nbsp;&nbsp;</span>산점도</a></div><div class="lev1"><a href="#Lines-15"><span class="toc-item-num">15&nbsp;&nbsp;</span>선</a></div><div class="lev1"><a href="#Histograms-16"><span class="toc-item-num">16&nbsp;&nbsp;</span>히스토그램</a></div><div class="lev1"><a href="#Images-17"><span class="toc-item-num">17&nbsp;&nbsp;</span>이미지</a></div><div class="lev1"><a href="#Animations-18"><span class="toc-item-num">18&nbsp;&nbsp;</span>애니메이션</a></div><div class="lev1"><a href="#Saving-animations-to-video-files-19"><span class="toc-item-num">19&nbsp;&nbsp;</span>애니메이션을 비디오로 저장</a></div><div class="lev1"><a href="#What-next?-20"><span class="toc-item-num">20&nbsp;&nbsp;</span>다음은 무엇을 해야할까?</a></div>
+ 
+
+<a id='#Plotting-your-first-graph-1'></a>
+# 처음으로 그려보는 그래프
+
+우선은 `matplotlib` 라이브러리를 임포트 해줘야 합니다.
+
+```{python}
+import matplotlib
+```
+
+Matplotlib은 Tk, wxPython 등과 같이 다양한 그래픽 라이브러리를 기반으로 사용하여 그래프를 출력할 수 있습니다. 명령줄을 사용하여 Python을 실행하는 경우, 일반적으로 그래프는 별도의 윈도우 창에서 나타납니다. 주피터 노트북을 사용한다면, %matplotlib inline 이라는 magic command를 사용하여 노트북 속에서 그래프를 출력할 수 있습니다.
+
+> 이제현 주:
+* 매직 명령어, 마술 명령어라고도 불리는 Magic command는 파이썬 코드를 실행하는 것이 아니라 주피터 노트북이나 Colab같은 IPython 커널 사용을 도와주는 명령입니다.  
+현재 작업 디렉토리를 확인하거나(%pwd) 작업 수행에 걸리는 시간을 확인할 수 있습니다(%timeit).
+여기서는 matplotlib의 실행 결과를 노트북에 그대로 보여주도록 지정하고 있습니다(%matplotlib inline).  
+* magic command에 대해 자세히 알고 싶으면 [이 글](https://ipython.readthedocs.io/en/stable/interactive/magics.html)을 참고하세요.)
+
+```{python}
+%matplotlib inline
+# matplotlib.use("TKAgg")    # 그래픽 백엔드로 Tk를 사용하고자 한다면, 이 코드를 사용하시기 바랍니다.
+```
+
+그러면 첫 번째 그래프를 그려보겠습니다! :)
+
+```{python}
+# pyplot
+
+import matplotlib.pyplot as plt
+
+plt.plot([1, 2, 4, 9, 5, 3])
+plt.show()
+```
+
+그렇습니다. 데이터 몇 개로 plot 함수를 호출한 다음, show 함수를 호출해주면 간단히 그래프를 그려볼 수 있습니다!
+
+plot 함수에 단일 배열의 데이터가 주어진다면, 수직 축의 좌표로서 이를 사용하게 되며, 각 데이터의 배열상 색인(인덱스)을 수평 좌표로서 사용합니다. 두 개의 배열을 넣어줄 수도 있습니다: 그러면, 하나는 x 축에 대한것이며, 다른 하나는 y 축에 대한것이 됩니다:
+
+> 이제현 주:  
+* 같은 그림을 `object oriented API`를 이용해 그려보겠습니다.
+* `object oriented API`는 그래프의 각 부분을 객체로 지정하고 그리는 것으로, 다음과 같은 패턴을 가지고 있습니다. 아래 코드와 주석의 `# object oriented API` 부분은 이제현이 추가한 부분입니다.  
+* `object oriented API`와 구분하기 위해 원본 코드에는 `#pyplot`이라는 헤더를 달았습니다.)
+
+```{python}
+# 1. 도화지(Figure: fig)를 깔고 그래프를 그릴 구역(Axes: ax)을 정의합니다.  
+fig, ax = plt.subplots()
+
+# 2. ax 위에 그래프를 그립니다.
+ax.plot([1, 2, 4, 9, 5, 3])
+
+# 3. 그래프를 화면에 출력합니다.
+plt.show()
+```
+
+> 이제현 주:  
+* `pyplot`과 동일한 형태의 그래프가 그려집니다.   
+* `fig`, `ax`를 선언하느라 한 줄을 더 입력해야 한다는 불편함이 있지만 `ax` 객체가 있어 그래프를 제어하기 더 쉬워집니다.
+* 많은 경우 `fig, ax = plt.subplots()` 대신 `ax = plt.subplot()`으로 해도 됩니다. 
+* 그러나 fig 대상 명령(예. savefig)을 사용해야 할 때도 있고, 두 가지를 따로 외우려면 혼동이 되니 한 가지로 통일하는 것이 좋습니다.
+
+```{python}
+# pyplot
+
+plt.plot([-3, -2, 5, 0], [1, 6, 4, 3])
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+ax.plot([-3, -2, 5, 0], [1, 6, 4, 3])
+plt.show()
+```
+
+이번에는 수학적인 함수를 그려보겠습니다. NumPy의 linespace 함수를 사용하여 -2 ~ 2 범위에 속하는 500개의 부동소수로 구성된 x 배열을 생성합니다. 그 다음 x의 각 값의 거듭제곱된 값을 포함하는 y 배열을 생성합니다 (NumPy에 대하여 좀 더 알고 싶다면, [NumPy 튜토리얼](https://colab.research.google.com/drive/tools_numpy.ipynb)을 참고하시기 바랍니다).
+
+```{python}
+# pyplot
+
+import numpy as np
+x = np.linspace(-2, 2, 500)
+y = x**2
+
+plt.plot(x, y)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+
+ax.plot(x, y)
+
+plt.show()
+```
+
+그래프가 약간은 삭막해 보입니다. 타이틀과 x 및 y축에 대한 라벨, 그리고 모눈자를 추가적으로 그려보겠습니다.
+
+```{python}
+# pyplot
+
+plt.plot(x, y)
+plt.title("Square function")
+plt.xlabel("x")
+plt.ylabel("y = x**2")
+plt.grid(True)
+plt.show()
+```
+
+> 이제현 주 :
+* object-oriented API는 축 이름과 같은 설정 명령어가 `pyplot`과 다소 다릅니다.  
+* 대체로 축 이름(label), 범위(limits) 등을 지정하는 명령어는 `set_대상()`, 거꾸로 그래프에서 설정값을 가져오는 명령어는 `get_대상()`으로 통일되어 있습니다.  
+* 개인적으로 `pyplot`의 명령어 체계보다 `object-oriented API`의 체계를 선호합니다.
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+
+ax.plot(x, y)
+ax.set_title("Square function")
+ax.set_xlabel("x")
+ax.set_ylabel("y = x**2")
+ax.grid(True)
+
+plt.show()
+```
+
+# 선의 스타일과 색상
+
+기본적으로 matplotlib은 바로 다음에 위치한(연이은) 데이터 사이에 선을 그립니다.
+
+
+```{python}
+# pyplot
+
+plt.plot([0, 100, 100, 0, 0, 100, 50, 0, 100], [0, 0, 100, 100, 0, 100, 130, 100, 0])
+plt.axis([-10, 110, -10, 140])
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+
+ax.plot([0, 100, 100, 0, 0, 100, 50, 0, 100], [0, 0, 100, 100, 0, 100, 130, 100, 0])
+ax.set_xlim(-10, 110)
+ax.set_ylim(-10, 140)
+
+# 그래프의 범위는 pyplot과 같이 ax.axis([-10, 110, -10, 140]) 으로 지정할 수 있습니다.
+# 하지만 위와 같이 set_xlim, set_ylim을 사용해서 명시하는 것이 더 체계적으로 느껴집니다.
+
+plt.show()
+```
+
+세 번째 파라미터를 지정하면 선의 스타일과 색상을 바꿀 수 있습니다. 예를 들어서 "g--"는 "초록색 파선"을 의미합니다.  
+예를 들어 아래와 같이 말이죠:
+
+```{python}
+# pyplot
+
+plt.plot([0, 100, 100, 0, 0], [0, 0, 100, 100, 0], "r-", [0, 100, 50, 0, 100], [0, 100, 130, 100, 0], "g--")
+plt.axis([-10, 110, -10, 140])
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+
+ax.plot([0, 100, 100, 0, 0], [0, 0, 100, 100, 0], "r-", [0, 100, 50, 0, 100], [0, 100, 130, 100, 0], "g--")
+ax.set_xlim(-10, 110)
+ax.set_ylim(-10, 140)
+
+plt.show()
+```
+
+또는 show를 호출하기 전 plot을 여러번 호출해도 가능합니다.
+
+```{python}
+# pyplot
+
+plt.plot([0, 100, 100, 0, 0], [0, 0, 100, 100, 0], "r-")
+plt.plot([0, 100, 50, 0, 100], [0, 100, 130, 100, 0], "g--")
+plt.axis([-10, 110, -10, 140])
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+
+ax.plot([0, 100, 100, 0, 0], [0, 0, 100, 100, 0], "r-")
+ax.plot([0, 100, 50, 0, 100], [0, 100, 130, 100, 0], "g--")
+ax.set_xlim(-10, 110)
+ax.set_ylim(-10, 140)
+
+plt.show()
+```
+
+선 대신에 간단한 점을 그려보는 것도 가능합니다. 아래는 초록색 파선, 빨강 점선, 파랑 삼각형의 예를 보여줍니다. [공식 문서](https://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot)에서 사용 가능한 스타일 및 색상의 모든 옵션을 확인해 볼 수 있습니다.
+
+```{python}
+# pyplot
+
+x = np.linspace(-1.4, 1.4, 30)
+plt.plot(x, x, 'g--', x, x**2, 'r:', x, x**3, 'b^')
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+
+x = np.linspace(-1.4, 1.4, 30)
+
+ax.plot(x, x, 'g--')
+ax.plot(x, x**2, 'r:')
+ax.plot(x, x**3, 'b^')
+
+# 여러 그래프를 ax.plot(x, x, 'g--', x, x**2, 'r:', x, x**3, 'b^')과 같이 한 줄에 그릴 수도 있습니다.
+# 그러나 이와 같이 따로 떼서 그리면 혼동을 방지할 수 있습니다.
+# 이는 pyplot도 마찬가지입니다.
+
+plt.show()
+```
+
+plot 함수는 Line2D객체로 구성된 리스트를 반환합니다 (각 객체가 각 선에 대응됩니다). 이 선들에 대한 추가적인 속성을 설정할 수도 있습니다. 가령 선의 두께, 스타일, 투명도 같은것의 설정이 가능합니다. [공식 문서](https://matplotlib.org/tutorials/introductory/pyplot.html)에서 설정 가능한 모든 속성을 확인해볼 수 있습니다.
+
+```{python}
+# pyplot
+
+x = np.linspace(-1.4, 1.4, 30)
+line1, line2, line3 = plt.plot(x, x, 'g--', x, x**2, 'r:', x, x**3, 'b^')
+line1.set_linewidth(3.0)
+line1.set_dash_capstyle("round")
+line3.set_alpha(0.2)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+x = np.linspace(-1.4, 1.4, 30)
+
+fig, ax = plt.subplots()
+
+# plot을 나누어 그리면 어디에 어떤 설정이 적용되었는지 알아보기 편합니다.
+# linewidth, alpha와 같은 line style도 plot() 안에 넣으면 혼동을 방지할 수 있습니다.
+line1 = ax.plot(x, x, 'g--', linewidth=3, dash_capstyle='round')
+line2 = ax.plot(x, x**2, 'r:')
+line3 = ax.plot(x, x**3, 'b^', alpha=0.2)
+
+plt.show()
+```
+
+# 그림 저장
+
+그래프를 그림파일로 저장하는 방법은 간단합니다. 단순히 파일이름을 지정하여 [savefig](https://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.savefig) 함수를 호출해 주기만 하면 됩니다. 가능한 이미지 포맷은 사용하는 그래픽 백엔드에 따라서 지원 여부가 결정됩니다. 
+
+```{python}
+# savefig()는 pyplot과 object oriented API 모두 동일합니다.
+
+x = np.linspace(-1.4, 1.4, 30)
+plt.plot(x, x**2)
+plt.savefig("my_square_function.png", transparent=True)
+```
+
+# 부분 그래프 (subplot)
+
+matplotlib는 하나의 그림(figure)에 여러개의 부분 그래프를 포함할 수 있습니다. 이 부분 그래프는 격자 형식으로 관리됩니다. `subplot` 함수를 호출하여 부분 그래프를 생성할 수 있습니다. 이 때 격자의 행/열의 수 및 그래프를 그리고자 하는 부분 그래프의 색인을 파라미터로서 지정해줄 수 있습니다 (색인은 1부터 시작하며, 좌->우, 상단->하단의 방향입니다). 
+* `pyplot`은 현재 활성화된 부분 그래프를 계속해서 추적합니다 (`plt.gca()`를 호출하여 해당 부분 그래프의 참조를 얻을 수 있습니다). 따라서, `plot` 함수를 호출할 때 활성화된 부분 그래프에 그림이 그려지게 됩니다.
+
+> 이제현 주 :  
+* `object oriented API` 방식에서는 그래프를 그리기 전에 먼저 틀을 잡아둡니다. 그래프를 그릴 때 사전에 정의된 영역 중 어디에 그래프를 그릴지 지정하는 방식입니다.  
+* `pyplot`의 `plt.gca()`가 바로 object oriented API의 `axes`입니다.
+
+```{python}
+# pyplot
+
+x = np.linspace(-1.4, 1.4, 30)
+
+# subplot(2,2,1)은 subplot(221)로 축약할 수 있습니다.
+plt.subplot(2, 2, 1)  # 2 행 2 열 크기의 격자 중 첫 번째 부분 그래프 = 좌측 상단
+plt.plot(x, x)
+plt.subplot(2, 2, 2)  # 2 행 2 열 크기의 격자 중 두 번째 부분 그래프 = 우측 상단
+plt.plot(x, x**2)
+plt.subplot(2, 2, 3)  # 2 행 2 열 크기의 격자 중 세 번째 부분 그래프 = 좌측 하단
+plt.plot(x, x**3)
+plt.subplot(2, 2, 4)  # 2 행 2 열 크기의 격자 중 네 번째 부분 그래프 = 우측 하단
+plt.plot(x, x**4)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+x = np.linspace(-1.4, 1.4, 30)
+
+fig, ax = plt.subplots(2, 2) # 순서대로 row의 갯수, col의 갯수입니다. nrows=2, cols=2로 지정할 수도 있습니다.
+
+# plot위치는 ax[row, col] 또는 ax[row][col]로 지정합니다.
+ax[0, 0].plot(x, x)      # 2 행 2 열 크기의 격자 중 첫 번째 부분 그래프 = 좌측 상단
+ax[0, 1].plot(x, x**2)   # 2 행 2 열 크기의 격자 중 두 번째 부분 그래프 = 우측 상단
+ax[1, 0].plot(x, x**3)   # 2 행 2 열 크기의 격자 중 세 번째 부분 그래프 = 좌측 하단
+ax[1, 1].plot(x, x**4)   # 2 행 2 열 크기의 격자 중 네 번째 부분 그래프 = 우측 하단
+
+plt.show()
+```
+
+격자의 여러 영역으로 확장된 부분 그래프를 생성하는 것도 쉽습니다:
+
+
+```{python}
+# pyplot
+
+plt.subplot(2, 2, 1)  # 2 행 2 열 크기의 격자 중 첫 번째 부분 그래프 = 좌측 상단
+plt.plot(x, x)
+plt.subplot(2, 2, 2)  # 2 행 2 열 크기의 격자 중 두 번째 부분 그래프 = 우측 상단
+plt.plot(x, x**2)
+plt.subplot(2, 1, 2)  # 2행 *1* 열의 두 번째 부분 그래프 = 하단
+                      # 2행 1열 크기의 그래프가 두 개 그려질 수 있지만,
+                      # 상단 부분은 이미 두 개의 부분 그래프가 차지하였다.
+                      # 따라서, 두 번째 부분 그래프로 지정함
+plt.plot(x, x**3)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+grid = plt.GridSpec(2, 2)  # 2행 2열 크기의 격?자를 준비합니다.
+
+ax1 = plt.subplot(grid[0, 0])  # 2행 2열 크기의 격자 중 첫 번째 부분 그래프 = 좌측 상단
+ax2 = plt.subplot(grid[0, 1])  # 2행 2열 크기의 격자 중 두 번째 부분 그래프 = 우측 상단
+ax3 = plt.subplot(grid[1, 0:]) # 2행 *1*열의 두 번째 부분 그래프 = 하단
+                               # 범위를 [1, 0:]으로 설정하여 2행 전체를 지정함.
+
+ax1.plot(x, x)
+ax2.plot(x, x**2)
+ax3.plot(x, x**3)
+
+plt.show()
+```
+
+보다 복잡한 부분 그래프의 위치 선정이 필요하다면, `subplot2grid`를 대신 사용할 수 있습니다. 격자의 행과 열의 번호 및 격자에서 해당 부분 그래프를 그릴 위치를 지정해줄 수 있습니다 (좌측상단 = (0,0). 또한 몇 개의 행/열로 확장되어야 하는지도 추가적으로 지정할 수 있습니다. 아래는 그에 대한 예를 보여줍니다:
+
+```{python}
+# pyplot
+plt.subplot2grid((3,3), (0, 0), rowspan=2, colspan=2)
+plt.plot(x, x**2)
+plt.subplot2grid((3,3), (0, 2))
+plt.plot(x, x**3)
+plt.subplot2grid((3,3), (1, 2), rowspan=2)
+plt.plot(x, x**4)
+plt.subplot2grid((3,3), (2, 0), colspan=2)
+plt.plot(x, x**5)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+gridsize = (3, 3)     # 2행 2열 크기의 격자를 준비합니다.
+ax1 = plt.subplot2grid(gridsize, (0,0), rowspan=2, colspan=2)
+ax2 = plt.subplot2grid(gridsize, (0,2))
+ax3 = plt.subplot2grid(gridsize, (1,2), rowspan=2)
+ax4 = plt.subplot2grid(gridsize, (2,0), colspan=2)
+
+ax1.plot(x, x**2)
+ax2.plot(x, x**3)
+ax3.plot(x, x**4)
+ax4.plot(x, x**5)
+
+plt.show()
+```
+
+보다 유연한 부분그래프 위치선정이 필요하다면, [GridSpec 문서](https://matplotlib.org/users/gridspec.html)를 확인해 보시길 바랍니다.
+
+# 여러개의 그림 (figure)
+
+여러개의 그림을 그리는것도 가능합니다. 각 그림은 하나 이상의 부분 그래프를 가질 수 있습니다. 기본적으로는 matplotlib이 자동으로 figure(1)을 생성합니다. 그림간 전환을 할 때, pyplot은 현재 활성화된 그림을 계속해서 추적합니다 (이에대한 참조는 `plt.gcf()`의 호출로 알 수 있습니다). 또한 활성화된 그림의 활성화된 부분 그래프가 현재 그래프가 그려질 부분 그래프가 됩니다.
+
+> 이제현 주 :
+* `object oriented API`에서는 실행 순이 아니라 객체를 중심으로 명령을 실행합니다.
+* 다른 그림을 그리다가 앞서 그림을 추가할 때 `pyplot`에서 `plt.figure()` 명령으로 위 그림을 호출하는 대신 `object oriented API`는 목표 `Axes`를 지정하여 추가합니다.
+
+```{python}
+# pyplot
+
+x = np.linspace(-1.4, 1.4, 30)
+
+plt.figure(1)
+plt.subplot(211)
+plt.plot(x, x**2)
+plt.title("Square and Cube")
+plt.subplot(212)
+plt.plot(x, x**3)
+
+plt.figure(2, figsize=(10, 5))
+plt.subplot(121)
+plt.plot(x, x**4)
+plt.title("y = x**4")
+plt.subplot(122)
+plt.plot(x, x**5)
+plt.title("y = x**5")
+
+plt.figure(1)      # 그림 1로 돌아가며, 활성화된 부분 그래프는 212 (하단)이 됩니다
+plt.plot(x, -x**3, "r:")
+
+plt.show()
+```
+
+```{python}
+plt.figure(2)   
+plt.gcf().number
+```
+
+```{python}
+# object oriented API
+
+x = np.linspace(-1.4, 1.4, 30)
+
+fig1, ax1 = plt.subplots(nrows=2, ncols=1)
+
+ax1[0].plot(x, x**2)
+ax1[0].set_title("Square and Cube")
+
+ax1[1].plot(x, x**3)
+
+
+
+plt.show()
+```
+
+```{python}
+fig2, ax2 = plt.subplots(nrows=1, ncols=2, figsize=(10, 5))
+ax2[0].plot(x, x**4)
+ax2[0].set_title("y = x**4")
+
+ax2[1].plot(x, x**5)
+ax2[1].set_title("y = x**5")
+
+ax1[1].plot(x, -x**3, "r:")    # 그림 1로 돌아가며, 활성화된 부분 그래프는 ax1[1] (하단)이 됩니다.
+
+plt.show()
+```
+
+# Pyplot의 상태 머신: 암시적 vs 명시적
+
+지금까지 현재의 활성화된 부분 그래프를 추적하는 Pyplot의 상태 머신을 사용했었습니다. `plot` 함수를 호출할 때마다 pyplot은 단지 현재 활성화된 부분 그래프에 그림을 그립니다. 그리고 `plot` 함수를 호출 할 때, 그림 및 부분 그래프가 아직 존재하지 않는다면 이들을 만들어내는 마법같은(?) 작업도 일부 수행합니다. 이는 주피터와 같은 대화식의 환경에서 편리합니다.
+
+그러나 프로그램을 작성하는 것이라면, 명시적인 것이 암시적인것 보다 더 낫습니다. 명시적인 코드는 일반적으로 디버깅과 유지보수가 더 쉽습니다. 이 말에 동의하지 않는다면, Python 젠(Zen)의 두 번째 규칙을 읽어보시기 바랍니다.
+
+```{python}
+import this
+```
+
+아름다움이 추한 것보다 낫다.
+
+명확함이 함축된 것보다 낫다.
+
+단순함이 복잡한 것보다 낫다.
+
+복잡함이 난해한 것보다 낫다.
+
+단조로움이 중접된 것보다 낫다.
+
+여유로움이 밀집된 것보다 낫다.
+
+가독성은 중요하다.
+
+비록 실용성이 이상을 능가한다 하더라도 규칙을 깨야할 정도로 특별한 경우란 없다.
+
+알고도 침묵하지 않는 한 오류는 결코 조용히 지나가지 않는다.
+
+모호함을 마주하고 추측하려는 유혹을 거절하라. 비록 당신이 우둔해서 처음에는 명백해 보이지 않을 수도 있겠지만 문제를 해결할 하나의 - 바람직하고 유일한 - 명백한 방법이 있을 것이다.
+
+비록 하지않는 것이 지금 하는 것보다 나을 때도 있지만 지금 하는 것이 전혀 안하는 것보다 낫다.
+
+설명하기 어려운 구현이라면 좋은 아이디어가 아니다. 쉽게 설명할 수 있는 구현이라면 좋은 아이디어일 수 있다. 네임스페이스는 정말 대단한 아이디어다. -- 자주 사용하자!
+
+from [출처](https://wikidocs.net/7907)
+
+다행히도 Pyplot은 상태 머신을 완전히 무시할 수 있게끔 해 줍니다. 따라서 아름다운 명시적 코드를 작성하는것이 가능하죠. 간단히 `subplots` 함수를 호출해서 반환되는 figure 객체 및 축의 리스트를 사용하면 됩니다*. 마법은 더 이상 없습니다! 
+
+> 이제현 주: 
+* 여기서 설명하는 부분이 `matplotlib`의 `object oriented API`(객체지향 인터페이스)입니다.
+
+아래는 이에 대한 예 입니다:
+
+```{python}
+x = np.linspace(-2, 2, 200)
+fig1, (ax_top, ax_bottom) = plt.subplots(2, 1, sharex=True)
+fig1.set_size_inches(10,5)
+line1, line2 = ax_top.plot(x, np.sin(3*x**2), "r-", x, np.cos(5*x**2), "b-")
+line3, = ax_bottom.plot(x, np.sin(3*x), "r-")
+ax_top.grid(True)
+
+fig2, ax = plt.subplots(1, 1)
+ax.plot(x, x**2)
+plt.show()
+```
+
+일관성을 위해서 이 튜토리얼의 나머지 부분에서는 pyplot의 상태 머신을 계속해서 사용할 것입니다. 그러나 프로그램에서는 객체지향 인터페이스의 사용을 권장하고 싶습니다.
+
+# Pylab *vs* Pyplot *vs* Matplotlib
+
+pylab, pyplot, matplotlib 간의 관계에대한 혼동이 있습니다. 그러나 이들의 관계는 매우 단순합니다: matplotlib은 완전한 라이브러리이며, pylab 및 pyplot을 포함한 모든것을 가지고 있습니다.
+
+Pyplot은 그래프를 그리기위한 다양한 도구를 제공합니다. 여기에는 내부적인 객체지향적인 그래프 그리기 라이브러리에 대한 상태 머신 인터페이스도 포함됩니다.
+
+Pylab은 mkatplotlib.pyplot 및 NumPy를 단일 네임스페이스로 임포트하는 편리성을 위한 모듈입니다. 인터넷에 떠도는 pylab을 사용하는 여러 예제를 보게 될 것입니다. 그러나 이는 더이상 권장되는 사용방법은 아닙니다 (왜냐하면 *명시적*인 임포트가 *암시적인*것 보다 더 낫기 때문입니다).
+
+> 이제현 주 : 
+* Pylab, Pyplot, Object oriented API의 관계는 [여기](https://matplotlib.org/3.2.1/api/index.html)를 참고하십시오
+
+# 텍스트 그리기
+`text` 함수를 호출하여 텍스트를 그래프의 원하는 위치에 추가할 수 있습니다. 출력을 원하는 텍스트와 수평 및 수직 좌표를 지정하고, 추가적으로 몇 가지 속성을 지정해 주기만 하면 됩니다. matplotlib의 모든 텍스트는 TeX 방정식 표현을 포함할 수 있습니다. 더 자세한 내용은 [공식 문서](http://matplotlib.org/users/mathtext.html)를 참조하시기 바랍니다.
+
+```{python}
+# pyplot
+
+x = np.linspace(-1.5, 1.5, 30)
+px = 0.8
+py = px**2
+
+plt.plot(x, x**2, "b-", px, py, "ro")
+
+plt.text(0, 1.5, "Square function\n$y = x^2$", fontsize=20, color='blue', horizontalalignment="center")
+plt.text(px - 0.08, py, "Beautiful point", ha="right", weight="heavy")
+plt.text(px, py, "x = %0.2f\ny = %0.2f"%(px, py), rotation=50, color='gray')
+
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+
+ax.plot(x, x**2, "b-")
+ax.plot(px, py, "ro")
+
+ax.text(0, 1.5, "Square function\n$y = x^2$", fontsize=20, color='blue', horizontalalignment="center")
+ax.text(px - 0.08, py, "Beautiful point", ha="right", weight="heavy")
+ax.text(px, py, "x = %0.2f\ny = %0.2f"%(px, py), rotation=50, color='gray')
+
+plt.show()
+```
+
+* 알아둘 것: `ha`는 `horizontalalignment(수평정렬)`의 이명 입니다.
+
+더 많은 텍스트 속성을 알고 싶다면, [공식 문서](http://matplotlib.org/users/text_props.html#text-properties)를 참조하시기 바랍니다.
+
+아래 그래프의 "beautiful point" 같은 텍스트 처럼, 그래프의 요소에 주석을 다는것은 꽤 흔한 일입니다. `annotate` 함수는 이를 쉽게 할 수 있게 해 줍니다: 관심있는 부분의 위치를 지정하고, 텍스트의 위치를 지정합니다. 그리고 텍스트 및 화살표에 대한 추가적인 속성도 지정해줄 수 있습니다.
+
+```{python}
+# pyplot
+
+plt.plot(x, x**2, px, py, "ro")
+plt.annotate("Beautiful point", xy=(px, py), xytext=(px-1.3,py+0.5),
+                           color="green", weight="heavy", fontsize=14,
+                           arrowprops={"facecolor": "lightgreen"})
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+ax.plot(x, x**2, px, py, "ro")
+ax.annotate("Beautiful point", xy=(px, py), xytext=(px-1.3,py+0.5),
+                           color="green", weight="heavy", fontsize=14,
+                           arrowprops={"facecolor": "lightgreen"})
+plt.show()
+```
+
+`bbox` 속성을 사용하면, 텍스트를 포함하는 사각형을 그려볼 수도 있습니다:
+
+
+```{python}
+# pyplot
+
+plt.plot(x, x**2, px, py, "ro")
+
+bbox_props = dict(boxstyle="rarrow,pad=0.3", ec="b", lw=2, fc="lightblue")
+plt.text(px-0.2, py, "Beautiful point", bbox=bbox_props, ha="right")
+
+bbox_props = dict(boxstyle="round4,pad=1,rounding_size=0.2", ec="black", fc="#EEEEFF", lw=5)
+plt.text(0, 1.5, "Square function\n$y = x^2$", fontsize=20, color='black', ha="center", bbox=bbox_props)
+
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+ax.plot(x, x**2)
+ax.plot(px, py, "ro")
+
+bbox_props = dict(boxstyle="rarrow,pad=0.3", ec="b", lw=2, fc="lightblue")
+ax.text(px-0.2, py, "Beautiful point", bbox=bbox_props, ha="right")
+
+bbox_props = dict(boxstyle="round4,pad=1,rounding_size=0.2", ec="black", fc="#EEEEFF", lw=5)
+ax.text(0, 1.5, "Square function\n$y = x^2$", fontsize=20, color='black', ha="center", bbox=bbox_props)
+
+plt.show()
+```
+
+재미를 위해서 [xkcd](http://xkcd.com) 스타일의 그래프를 그려보고 싶다면, `with plt.xkcd()` 섹션 블록을 활용할 수도 있습니다:
+
+```{python}
+with plt.xkcd():
+    plt.plot(x, x**2, px, py, "ro")
+
+    bbox_props = dict(boxstyle="rarrow,pad=0.3", ec="b", lw=2, fc="lightblue")
+    plt.text(px-0.2, py, "Beautiful point", bbox=bbox_props, ha="right")
+
+    bbox_props = dict(boxstyle="round4,pad=1,rounding_size=0.2", ec="black", fc="#EEEEFF", lw=5)
+    plt.text(0, 1.5, "Square function\n$y = x^2$", fontsize=20, color='black', ha="center", bbox=bbox_props)
+
+    plt.show()
+```
+
+# 범례 (Legends)
+
+범례를 추가하는 가장 간단한 방법은 모든 선에 라벨을 설정 해 주고, `legend` 함수를 호출하는 것입니다.
+
+```{python}
+# pyplot
+
+x = np.linspace(-1.4, 1.4, 50)
+plt.plot(x, x**2, "r--", label="Square function")
+plt.plot(x, x**3, "g-", label="Cube function")
+plt.legend(loc="best")
+plt.grid(True)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+x = np.linspace(-1.4, 1.4, 50)
+
+fig, ax = plt.subplots()
+
+ax.plot(x, x**2, "r--", label="Square function")
+ax.plot(x, x**3, "g-", label="Cube function")
+ax.legend(loc="best")
+ax.grid(True)
+plt.show()
+```
+
+# 비선형 척도
+Matplotlib은 로그, 로짓(logit)과 같은 비선형 척도를 지원합니다.
+
+```{python}
+# pyplot
+
+x = np.linspace(0.1, 15, 500)
+y = x**3/np.exp(2*x)
+
+plt.figure(1)
+plt.plot(x, y)
+plt.yscale('linear')
+plt.title('linear')
+plt.grid(True)
+
+plt.figure(2)
+plt.plot(x, y)
+plt.yscale('log')
+plt.title('log')
+plt.grid(True)
+
+plt.figure(3)
+plt.plot(x, y)
+plt.yscale('logit')
+plt.title('logit')
+plt.grid(True)
+
+plt.figure(4)
+plt.plot(x, y - y.mean())
+plt.yscale('symlog')
+plt.title('symlog')
+plt.grid(True)
+
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+x = np.linspace(0.1, 15, 500)
+y = x**3/np.exp(2*x)
+
+fig1, ax1 = plt.subplots()
+ax1.plot(x, y)
+ax1.set_yscale('linear')
+ax1.set_title('linear')
+ax1.grid(True)
+
+fig2, ax2 = plt.subplots()
+ax2.plot(x, y)
+ax2.set_yscale('log')
+ax2.set_title('log')
+ax2.grid(True)
+
+fig3, ax3 = plt.subplots()
+ax3.plot(x, y)
+ax3.set_yscale('logit')
+ax3.set_title('logit')
+ax3.grid(True)
+
+fig4, ax4 = plt.subplots()
+ax4.plot(x, y - y.mean())
+ax4.set_yscale('symlog')
+ax4.set_title('symlog')
+ax4.grid(True)
+
+plt.show()
+```
+
+# 틱과 틱커 (Ticks and tickers)
+
+각 축에는 "틱(ticks)"이라는 작은 표시가 있습니다. 정확히 말하자면, "틱"은 표시(예. (-1, 0, 1))의 *위치*"이며, *틱 선*은 그 위치에 그려지는 작은 선입니다. 또한 "틱 라벨"은 틱 선 옆에 그려지는 라벨이며, "틱커"는 틱의 위치를 결정하는 객체 입니다. 기본적인 틱커는 ~5 에서 8 틱을 위치시키는데 꽤 잘 작동합니다. 즉, 틱 서로간에 적당한 거리를 표현합니다.
+
+하지만, 가끔은 좀 더 이를 제어할 필요가 있습니다 (예. 위의 로짓 그래프에서는 너무 많은 틱 라벨이 있습니다). 다행히도 matplotlib은 틱을 완전히 제어하는 방법을 제공합니다. 심지어 보조 눈금(minor tick)을 활성화 할 수도 있습니다.
+
+```{python}
+# pyplot 
+
+# 이제현 주: 사실상 object oriented API 입니다.
+
+x = np.linspace(-2, 2, 100)
+
+plt.figure(1, figsize=(15,10))
+plt.subplot(131)
+plt.plot(x, x**3)
+plt.grid(True)
+plt.title("Default ticks")
+
+ax = plt.subplot(132)
+plt.plot(x, x**3)
+ax.xaxis.set_ticks(np.arange(-2, 2, 1))
+plt.grid(True)
+plt.title("Manual ticks on the x-axis")
+
+ax = plt.subplot(133)
+plt.plot(x, x**3)
+plt.minorticks_on()
+ax.tick_params(axis='x', which='minor', bottom='off')
+ax.xaxis.set_ticks([-2, 0, 1, 2])
+ax.yaxis.set_ticks(np.arange(-5, 5, 1))
+ax.yaxis.set_ticklabels(["min", -4, -3, -2, -1, 0, 1, 2, 3, "max"])
+plt.title("Manual ticks and tick labels\n(plus minor ticks) on the y-axis")
+
+
+plt.grid(True)
+
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+# 위 pyplot 예제는 사실상 object oriented API 입니다.
+# 여기에서는 같은 기능을 더 단순한 코드로 구현하였습니다
+
+x = np.linspace(-2, 2, 100)
+
+fig, ax = plt.subplots(ncols=3, figsize=(15, 10))
+
+ax[0].plot(x, x**3)
+ax[0].grid(True)
+ax[0].set_title("Default ticks")
+
+ax[1].plot(x, x**3)
+ax[1].grid(True)
+ax[1].set_xticks(np.arange(-2, 2, 1))
+ax[1].set_title("Manual ticks on the x-axis")
+
+ax[2].plot(x, x**3)
+ax[2].grid(True)
+ax[2].minorticks_on()
+ax[2].set_xticks([-2, 0, 1, 2], minor=False)
+ax[2].set_yticks(np.arange(-5, 5, 1))
+ax[2].set_yticklabels(["min", -4, -3, -2, -1, 0, 1, 2, 3, "max"])
+ax[2].set_title("Manual ticks and tick labels\n(plus minor ticks) on the y-axis")
+
+plt.show()
+```
+
+# 극좌표계의 투영 (Polar projection)
+
+극좌표계 그래프를 그리는 것은 매우 간단합니다. 부분 그래프를 생성할 때 `projection` 속성을 `"polar"`로 설정해 주기만 하면 됩니다.
+
+> 이제현 주:   
+* `object oriented API`는 일반적으로 `plt.subplots()`로 `Figure`와 `Axes` 객체를 동시에 생성합니다. 
+* `plt.subplots()`는 `projection` 속성을 가지고 있지 않습니다.
+* 따라서 `projection`을 사용할 때는 `plt.figure()`로 `Figure` 객체를 먼저 생성한 후 `plt.subplot()`이나 `plt.add_subplot()`으로 `Axes` 객체를 추가해 주거나,
+  `fig.subplots()` 안에 `subplot_kw=={'polar':True}`로 지정해 주어야 합니다.
+
+```{python}
+# pyplot 
+
+radius = 1
+theta = np.linspace(0, 2*np.pi*radius, 1000)
+
+plt.subplot(111, projection='polar')
+plt.plot(theta, np.sin(5*theta), "g-")
+plt.plot(theta, 0.5*np.cos(20*theta), "b-")
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+radius = 1
+theta = np.linspace(0, 2*np.pi*radius, 1000)
+
+fig = plt.figure()
+ax = fig.add_subplot(projection='polar')
+
+# 또는, subplot_kw 를 이용해서 polar plot으로 설정합니다.
+# fig, ax = plt.subplots(subplot_kw={'polar':True}) 
+
+ax.plot(theta, np.sin(5*theta), "g-")
+ax.plot(theta, 0.5*np.cos(20*theta), "b-")
+plt.show()
+```
+
+# 3차원 투영
+
+3차원 그래프를 그리는것은 꽤 간단합니다. 우선 `"3d"` 투영을 등록하는 `Axes3D`를 임포트 해줘야 합니다. 그리곤 `projection` 속성을 `"3d"`로 설정된 부분 그래프 생성합니다. 그러면 `Axes3DSubplot` 이라는 객체가 반환되는데, 이 객체의 `plot_surface` 메서드를 호출하면 x, y, z 좌표를 포함한 추가적이나 속성을 지정할 수 있습니다.
+
+```{python}
+# pyplot
+ 
+# 이제현 주: 사실상 object oriented API 입니다.
+
+from mpl_toolkits.mplot3d import Axes3D
+
+x = np.linspace(-5, 5, 50)
+y = np.linspace(-5, 5, 50)
+X, Y = np.meshgrid(x, y)
+R = np.sqrt(X**2 + Y**2)
+Z = np.sin(R)
+
+figure = plt.figure(1, figsize = (12, 4))
+subplot3d = plt.subplot(111, projection='3d')  # 이제현 주: Axes 객체입니다. 
+surface = subplot3d.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=matplotlib.cm.coolwarm, linewidth=0.1)
+plt.show()
+```
+
+동일한 데이터를 출력하는 또 다른 방법은 등고선도(contour plot)를 *이용*하는 것입니다.
+
+```{python}
+# pyplot
+
+plt.contourf(X, Y, Z, cmap=matplotlib.cm.coolwarm)
+plt.colorbar()
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+# 이제현 주: 종종 object oriented API가 pyplot보다 불편할 때가 있습니다.
+#            contour plot의 colorbar는 무엇을 대상으로 할 지를 인자로 전달해야 합니다.
+
+fig, ax = plt.subplots()    
+contour = ax.contourf(X, Y, Z, cmap=matplotlib.cm.coolwarm)
+plt.colorbar(contour)
+plt.show()
+
+```
+
+# 산점도(Scatter plot)
+
+단순히 각 점에 대한 x 및 y 좌표를 제공하면 산점도를 그릴 수 있습니다.
+
+```{python}
+# pyplot
+
+from numpy.random import rand
+x, y = rand(2, 100)
+plt.scatter(x, y)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+from numpy.random import rand
+x, y = rand(2, 100)
+
+fig, ax = plt.subplots()
+ax.scatter(x, y)
+plt.show()
+```
+
+부수적으로 각 점의 크기를 정할 수도 있습니다.
+
+```{python}
+# pyplot 
+
+x, y, scale = rand(3, 100)
+scale = 500 * scale ** 5
+plt.scatter(x, y, s=scale)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+x, y, scale = rand(3, 100)
+scale = 500 * scale ** 5
+
+fig, ax = plt.subplots()
+ax.scatter(x, y, s=scale)
+plt.show()
+```
+
+마찬가지로 여러 속성을 설정할 수 있습니다. 가령 테두리 및 모양의 내부 색상, 그리고 투명도와 같은것의 설정이 가능합니다.
+
+```{python}
+# pyplot
+
+for color in ['red', 'green', 'blue']:
+    n = 100
+    x, y = rand(2, n)
+    scale = 500.0 * rand(n) ** 5
+    plt.scatter(x, y, s=scale, c=color, alpha=0.3, edgecolors='blue')
+
+plt.grid(True)
+
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+
+for color in ['red', 'green', 'blue']:
+    n = 100
+    x, y = rand(2, n)
+    scale = 500.0 * rand(n) ** 5
+    ax.scatter(x, y, s=scale, c=color, alpha=0.3, edgecolors='blue')
+
+ax.grid(True)
+
+plt.show()
+```
+
+# 선
+
+지금까지 해온것 처럼 `plot` 함수를 사용하여 선을 그릴 수 있습니다. 하지만, 가끔은 그래프를 통과하는 무한한 선을 그리는 유틸리티 함수를 만들면 편리합니다 (기울기와 절편으로). 또한 `hlines` 및 `vlines` 함수를 사용하면, 아래와 같이 부분 수평 및 수직 선을 그릴 수도 있습니다:
+
+```{python}
+# pyplot
+
+from numpy.random import randn
+
+def plot_line(axis, slope, intercept, **kargs):
+    xmin, xmax = axis.get_xlim()
+    plt.plot([xmin, xmax], [xmin*slope+intercept, xmax*slope+intercept], **kargs)
+
+x = randn(1000)
+y = 0.5*x + 5 + randn(1000)*2
+plt.axis([-2.5, 2.5, -5, 15])
+plt.scatter(x, y, alpha=0.2)
+plt.plot(1, 0, "ro")
+plt.vlines(1, -5, 0, color="red")
+plt.hlines(0, -2.5, 1, color="red")
+plot_line(axis=plt.gca(), slope=0.5, intercept=5, color="magenta")
+plt.grid(True)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+from numpy.random import randn
+
+# Axis를 인자로 전달하여 함수 연산과 시각화를 수행합니다.
+def plot_line(axis, slope, intercept, **kargs):
+    xmin, xmax = axis.get_xlim()
+    axis.plot([xmin, xmax], [xmin*slope+intercept, xmax*slope+intercept], **kargs)
+
+x = randn(1000)
+y = 0.5*x + 5 + randn(1000)*2
+
+fig, ax = plt.subplots()
+
+ax.set_xlim(-2.5, 2.5)
+ax.set_ylim(-5, 15)
+ax.scatter(x, y, alpha=0.2)
+ax.plot(1, 0, "ro")
+ax.vlines(1, -5, 0, color="red")
+ax.hlines(0, -2.5, 1, color="red")
+plot_line(axis=ax, slope=0.5, intercept=5, color="magenta")  
+ax.grid(True)
+plt.show()
+```
+
+# 히스토그램
+
+```{python}
+# pyplot
+
+data = [1, 1.1, 1.8, 2, 2.1, 3.2, 3, 3, 3, 3]
+plt.subplot(211)
+plt.hist(data, bins = 10, rwidth=0.8)
+
+plt.subplot(212)
+plt.hist(data, bins = [1, 1.5, 2, 2.5, 3], rwidth=0.95)
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+data = [1, 1.1, 1.8, 2, 2.1, 3.2, 3, 3, 3, 3]
+
+fig, ax = plt.subplots(2, 1)
+ax[0].hist(data, bins = 10, rwidth=0.8)
+
+ax[1].hist(data, bins = [1, 1.5, 2, 2.5, 3], rwidth=0.95)
+ax[1].set_xlabel("Value")
+ax[1].set_ylabel("Frequency")
+
+plt.show()
+```
+
+```{python}
+# pyplot
+
+data1 = np.random.randn(400)
+data2 = np.random.randn(500) + 3
+data3 = np.random.randn(450) + 6
+data4a = np.random.randn(200) + 9
+data4b = np.random.randn(100) + 10
+
+plt.hist(data1, bins=5, color='g', alpha=0.75, label='bar hist') # default histtype='bar'
+plt.hist(data2, color='b', alpha=0.65, histtype='stepfilled', label='stepfilled hist')
+plt.hist(data3, color='r', histtype='step', label='step hist')
+plt.hist((data4a, data4b), color=('r','m'), alpha=0.55, histtype='barstacked', label=('barstacked a', 'barstacked b'))
+
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+```{python}
+# pyplot
+from matplotlib import pyplot as plt
+import numpy as np
+
+data1 = np.random.randn(400)
+data2 = np.random.randn(500) + 3
+data3 = np.random.randn(450) + 6
+data4a = np.random.randn(200) + 9
+data4b = np.random.randn(100) + 10
+
+plt.figure(figsize=(16, 9))
+
+plt.subplot(2, 2, 1)
+plt.hist(data1, bins=5, color='g', alpha=0.75, label='bar hist') # default histtype='bar'
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.grid(True)
+
+plt.subplot(2, 2, 2)
+plt.hist(data2, color='b', alpha=0.65, histtype='stepfilled', label='stepfilled hist')
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.grid(True)
+
+plt.subplot(2, 2, 3)
+plt.hist(data3, color='r', histtype='step', label='step hist')
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.grid(True)
+
+plt.subplot(2, 2, 4)
+plt.hist((data4a, data4b), color=('r','m'), alpha=0.55, histtype='barstacked', label=('barstacked a', 'barstacked b'))
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.grid(True)
+
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+data1 = np.random.randn(400)
+data2 = np.random.randn(500) + 3
+data3 = np.random.randn(450) + 6
+data4a = np.random.randn(200) + 9
+data4b = np.random.randn(100) + 10
+
+fig, ax = plt.subplots()
+ax.hist(data1, bins=5, color='g', alpha=0.75, label='bar hist') # default histtype='bar'
+ax.hist(data2, color='b', alpha=0.65, histtype='stepfilled', label='stepfilled hist')
+ax.hist(data3, color='r', histtype='step', label='step hist')
+ax.hist((data4a, data4b), color=('r','m'), alpha=0.55, histtype='barstacked', label=('barstacked a', 'barstacked b'))
+
+ax.set_xlabel("Value")
+ax.set_ylabel("Frequency")
+ax.legend()
+ax.grid(True)
+plt.show()
+```
+
+# 이미지
+
+matplotlib에서의 이미지 불러오기, 생성하기, 화면에 그리기는 꽤 간단합니다.
+
+이미지를 불러오려면 `matplotlib.image` 모듈을 임포트하고, 파일이름을 지정한 `imread` 함수를 호출해 주면 됩니다. 그러면 이미지 데이터가 NumPy의 배열로서 반환됩니다. 앞서 저장했던 `my_square_function.png` 이미지에 대하여 이를 수행해 보겠습니다.
+
+> 이제현 주 :
+* 이미지 단독 출력은 `pyplot`과 `object oriented API` 사이에 별 차이가 없습니다.
+* `Axes`를 지정해서 출력하는 것이 다를 뿐입니다.
+* `pyplot`과의 중복성이 강하지만 익숙해지는 차원에서 `object oriented API`를 함께 도시합니다.
+
+```{python}
+import matplotlib.image as mpimg
+
+img = mpimg.imread('my_square_function.png')
+print(img.shape, img.dtype)
+```
+
+288x432 크기의 이미지를 불러왔습니다. 각 픽셀은 0~1 사이의 32비트 부동소수 값인 4개의 요소(빨강, 초록, 파랑, 투명도)로 구성된 배열로 표현됩니다. 이번에는 `imshow`함수를 호출해 보겠습니다:
+
+```{python}
+# pyplot
+
+plt.imshow(img)
+```
+
+```{python}
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+ax.imshow(img)
+plt.show()
+```
+
+허허허... 이미지 출력에 포함된 축을 숨기고 싶다면 아래와 같이 축을 off 시켜줄 수 있습니다:
+
+```{python}
+# pyplot
+
+plt.imshow(img)
+plt.axis('off')
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+ax.imshow(img)
+ax.axis('off')
+plt.show()
+```
+
+여러분만의 이미지를 생성하는것도 마찬가지로 간단합니다:
+
+```{python}
+# pyplot
+
+img = np.arange(100*100).reshape(100, 100)
+print(img)
+plt.imshow(img)
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+img = np.arange(100*100).reshape(100, 100)
+print(img)
+
+fig, ax = plt.subplots()
+ax.imshow(img)
+plt.show()
+```
+
+RGB 수준을 제공하지 않는다면, `imshow` 함수는 자동으로 값을 색그래디언트에 매핑합니다. 기본적인 동작에서의 색그래디언트는 파랑(낮은 값) 에서 빨강(높은 값)으로 움직입니다. 하지만 아래와 같이 다른 색상맵을 선택할 수도 있습니다:
+
+```{python}
+# pyplot
+
+plt.imshow(img, cmap="hot")
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+ax.imshow(img, cmap="hot")
+plt.show()
+```
+
+RGB 이미지를 직접적으로 생성하는것 또한 가능합니다:
+
+```{python}
+# pyplot
+
+img = np.empty((20,30,3))
+img[:, :10] = [0, 0, 0.6]
+img[:, 10:20] = [1, 1, 1]
+img[:, 20:] = [0.6, 0, 0]
+plt.imshow(img, interpolation='bilinear')
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+img = np.empty((20,30,3))
+img[:, :10] = [0, 0, 0.6]
+img[:, 10:20] = [1, 1, 1]
+img[:, 20:] = [0.6, 0, 0]
+
+fig, ax = plt.subplots()
+ax.imshow(img, interpolation='bilinear')
+plt.show()
+```
+
+`img` 배열이 매우 작기 때문에 (20x30), `imshow` 함수는 이미지를 figure 크기에 맞도록 늘려버린채 출력합니다. 이러한 늘리기의 기본 동작은 [쌍선형 보간법(bilinear interpolation)](https://en.wikipedia.org/wiki/Bilinear_interpolation)을 사용하여 추가된 픽셀을 매꿉니다. 테두리가 흐릿한 이유입니다.
+
+다른 보간법 알고리즘을 선택할 수도 있습니다. 가령 아래와 같이 근접 픽셀을 복사하는 방법이 있습니다:
+
+> 이제현 주 :
+* 위 코드의 `ax.imshow(img, interpolation='bilinear')` 부분은 원문에서 `ax.imshow(img)`로 되어 있습니다.
+* `matplotlib` 2.0 이전에는 `interpolation='bilinear'`가 기본값이기 때문에 경계선이 흐려지는 문제가 있었습니다.
+* 그러나 이후 `interpolation='nearest'`로 기본값이 변경되어 흐려지는 문제가 더 이상 발생하지 않습니다.
+* 자세한 사항은 [이 글](https://matplotlib.org/3.2.1/users/prev_whats_new/whats_new_2.0.0.html)을 참고하십시오.
+
+```{python}
+# pyplot
+
+plt.imshow(img, interpolation="nearest")
+plt.show()
+```
+
+```{python}
+# object oriented API
+
+fig, ax = plt.subplots()
+ax.imshow(img, interpolation="nearest")
+plt.show()
+```
+
+# 애니메이션
+
+matplotlib은 이미지 생성에 주로 사용되지만, 애니메이션의 출력도 가능합니다. 우선 `matplotlib.animation`을 임포트 해 줘야 합니다. 그 다음은 (주피터 노트북에서) `nbagg`를 백엔드로 설정하거나, 아래의 코드를 실행해 주면 됩니다.
+
+```{python}
+import matplotlib.animation as animation
+matplotlib.rc('animation', html='jshtml')
+```
+
+다음의 예는 데이터를 생성하는것으로 시작됩니다. 그 다음, 빈 그래프를 생성하고, 애니메이션을 그릴 매 프레임 마다 호출될 갱신(update) 함수를 정의합니다. 마지막으로, `FuncAnimation` 인스턴스를 생성하여 그래프에 애니메이션을 추가합니다.
+
+`FuncAnimation` 생성자는 figure, 갱신 함수, 그 외의 파라미터를 수용합니다. 각 프레임간 20ms의 시간차가 있는 100개의 프레임으로 구성된 애니메이션에 대한 인스턴스를 만들었습니다. 애니메이션의 각 프레임마다 `FuncAnimation` 는 갱신 함수를 호출하고, 프레임 번호를 `num` (이 예에서는 0~99의 범위) 으로서 전달해 줍니다. 또한 갱신 함수의 추가적인 두 파라미터는 FuncAnimation 생성시 `fargs`에 넣어준 값이 됩니다.
+
+작성한 갱신 함수는 선을 구성하는 데이터를 0 ~ `num` 데이터로 설정합니다 (따라서 데이터가 점진적으로 그려집니다). 그리고 약간의 재미 요소를 위해서, 각 데이터에 약간의 무작위 수를 추가하여 선이 씰룩씰룩 움직이게끔 해 주었습니다.
+
+```{python}
+# pyplot
+
+x = np.linspace(-1, 1, 100)
+y = np.sin(x**2*25)
+data = np.array([x, y])
+
+fig = plt.figure()
+line, = plt.plot([], [], "r-") # start with an empty plot
+plt.axis([-1.1, 1.1, -1.1, 1.1])
+plt.plot([-0.5, 0.5], [0, 0], "b-", [0, 0], [-0.5, 0.5], "b-", 0, 0, "ro")
+plt.grid(True)
+plt.title("Marvelous animation")
+
+# this function will be called at every iteration
+def update_line(num, data, line):
+    line.set_data(data[..., :num] + np.random.rand(2, num) / 25)  # we only plot the first `num` data points.
+    return line,
+
+line_ani = animation.FuncAnimation(fig, update_line, frames=100, fargs=(data, line), interval=67)
+plt.close()
+line_ani
+```
+
+```{python}
+# objected oriented API
+
+x = np.linspace(-1, 1, 100)
+y = np.sin(x**2*25)
+data = np.array([x, y])
+
+fig, ax = plt.subplots()
+
+line, = ax.plot([], [], "r-") # start with an empty plot
+ax.set_xlim(-1.1, 1.1)
+ax.set_ylim(-1.1, 1.1)
+ax.plot([-0.5, 0.5], [0, 0], "b-", [0, 0], [-0.5, 0.5], "b-", 0, 0, "ro")
+ax.grid(True)
+ax.set_title("Marvelous animation")
+
+# this function will be called at every iteration
+def update_line(num, data, line):
+    line.set_data(data[..., :num] + np.random.rand(2, num) / 25)  # we only plot the first `num` data points.
+    return line,
+
+line_ani = animation.FuncAnimation(fig, update_line, frames=100, fargs=(data, line), interval=67)
+plt.close()
+line_ani
+```
+
+# 애니메이션을 비디오로 저장
+비디오로 저장하기 위해서 Matplotlib은 써드파티 라이브러리([FFMPEG](https://www.ffmpeg.org/) 또는 [ImageMagick](https://imagemagick.org/)에 의존합니다. 다음의 예는 FFMPEG를 사용하기 때문에, 이 라이브러리가 먼저 설치되어 있어야만 합니다. 애니메이션을 GIF로 저장하고 싶다면 ImageMagick이 필요할 것입니다.
+
+```{python}
+# Writer = animation.writers['ffmpeg']
+# writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+# line_ani.save('my_wiggly_animation.mp4', writer=writer)
+```
+
+# 다음은 무엇을 해야할까?
+이제 matplotlib의 모든 기본을 습득하셨습니다. 하지만, 그 외에도 수 많은 옵션이 있습니다. 이를 배우기위한 가장 좋은 방법은 [갤러리](http://matplotlib.org/gallery.html) 사이트를 방문하여 흥미로운 그래프를 골라본 다음, 코드를 주피터 노트북에 복사하고 이것저것 가지고 놀아보는 것입니다.
+
+
